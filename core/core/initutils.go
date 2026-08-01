@@ -151,7 +151,7 @@ func getHostSensorHandler(ctx context.Context, scanInfo *cautils.ScanInfo, k8s *
 	hostSensorVal := scanInfo.HostSensorEnabled.Get()
 
 	switch {
-	case !k8sinterface.IsConnectedToCluster() || k8s == nil: // TODO(fred): fix race condition on global KSConfig there
+	case k8s == nil || k8s.KubernetesClient == nil:
 		return hostsensorutils.NewHostSensorHandlerMock()
 
 	case hostSensorVal != nil && *hostSensorVal:
